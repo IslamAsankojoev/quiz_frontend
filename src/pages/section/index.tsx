@@ -34,9 +34,9 @@ const Course: NextPageAuth = () => {
         )}
       </Stack>
       <Grid container spacing={2}>
-        {sections?.map((section) => (
+        {sections?.map((section, index) => (
           <Grid item key={section.id} xs={12} sm={12} md={3}>
-            <SectionCard {...section} />
+            <SectionCard {...section} access={sections[index - 1]?.status as any} />
           </Grid>
         ))}
       </Grid>

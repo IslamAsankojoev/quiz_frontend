@@ -21,6 +21,14 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 
+function shuffleArray(array: any) {
+  for (let i = array?.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 const TestPage: NextPageAuth = () => {
   const router = useRouter();
   const { isTeacher } = useRole();
@@ -240,18 +248,18 @@ const TestPage: NextPageAuth = () => {
         </>
       )}
       <br />
-      <br />
-      <Typography variant="h5">
-        Пройти тест - {sections?.find((el: ISection) => el?.test === test?.id)?.name}
-      </Typography>
-      <br />
 
       {!isTeacher && (
         <>
+          <br />
+          <Typography variant="h5">
+            Пройти тест - {sections?.find((el: ISection) => el?.test === test?.id)?.name}
+          </Typography>
+          <br />
           <Stack>
             <form onSubmit={handleSubmit2(onSubmitTest)}>
               <Stack direction="column" spacing={4}>
-                {questions?.map((question) => (
+                {shuffleArray(questions)?.map((question: IQuestion) => (
                   <Stack
                     key={question.id}
                     direction="row"

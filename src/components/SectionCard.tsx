@@ -5,8 +5,13 @@ import { Button, Card, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { useMutation, useQuery } from 'react-query';
+import Block from './Block';
 
-const SectionCard: FC<ISection> = ({ id, name, description, picture, material, status, test }) => {
+const SectionCard: FC<
+  ISection & {
+    access: boolean;
+  }
+> = ({ id, name, description, picture, material, status, test, access = true }) => {
   const { isTeacher } = useRole();
   const router = useRouter();
 
@@ -29,6 +34,7 @@ const SectionCard: FC<ISection> = ({ id, name, description, picture, material, s
         backgroundColor: '#D9D9D9',
         borderRadius: '20px',
         padding: '20px',
+        position: 'relative',
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -77,6 +83,7 @@ const SectionCard: FC<ISection> = ({ id, name, description, picture, material, s
           </Button>
         )}
       </Stack>
+      {!isTeacher && !access && <Block />}
     </Card>
   );
 };
