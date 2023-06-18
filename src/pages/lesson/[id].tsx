@@ -263,6 +263,7 @@ const LessonPage: NextPageAuth = () => {
               }}
             >
               <Typography variant="h6">Фото</Typography>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={lesson?.picture} alt="" />
             </Stack>
 
@@ -274,6 +275,7 @@ const LessonPage: NextPageAuth = () => {
               }}
             >
               <Typography variant="h6">Фото материал</Typography>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={lesson?.photo_material} alt="" />
             </Stack>
           </Stack>

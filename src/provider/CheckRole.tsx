@@ -11,7 +11,9 @@ const CheckRole: FC<{
 
   const { data, status } = useTypedSession();
   const Children = () => <>{children}</>;
-  const Memozed = useMemo(() => memo(Children), [children]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const MemoComponent = useMemo(() => memo(Children), [children]);
 
   const isAuth = status === 'authenticated';
   const isNotAuth = status === 'unauthenticated';
@@ -20,15 +22,15 @@ const CheckRole: FC<{
 
   // const MemizeComponent = useMemo(() => memo(Children), [children]);
 
-  if (is_auth && isAuth) return <Memozed />;
-  if (is_not_auth && isNotAuth) return <Memozed />;
-  if (is_teacher && isAuthor) return <Memozed />;
+  if (is_auth && isAuth) return <MemoComponent />;
+  if (is_not_auth && isNotAuth) return <MemoComponent />;
+  if (is_teacher && isAuthor) return <MemoComponent />;
 
-  if (is_auth && isAuth) return <Memozed />;
-  if (is_teacher && isAuth) return <Memozed />;
+  if (is_auth && isAuth) return <MemoComponent />;
+  if (is_teacher && isAuth) return <MemoComponent />;
 
-  if (is_not_auth && isNotAuth) return <Memozed />;
-  if (is_teacher && isAuthor) return <Memozed />;
+  if (is_not_auth && isNotAuth) return <MemoComponent />;
+  if (is_teacher && isAuthor) return <MemoComponent />;
 
   if (is_auth && isNotAuth) {
     router.push('/login');
