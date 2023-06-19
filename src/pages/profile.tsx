@@ -1,5 +1,6 @@
 import axiosInstance from '@/api/axios.config';
 import { ILesson, LessonService } from '@/api/lesson.service';
+import { IQuestion, QuestionService } from '@/api/question.service';
 import { IResult, ResultService } from '@/api/result.service';
 import { ISection, SectionService } from '@/api/section.service';
 import { ITesting, TestingService } from '@/api/testing.service';
@@ -18,7 +19,6 @@ const Profile: NextPageAuth = () => {
   const { data: session } = useTypedSession();
   const router = useRouter();
   const { isTeacher } = useRole();
-  const [testID, setTestID] = React.useState<any[]>([]);
 
   const { data: results } = useQuery('results', ResultService.findAll, {
     select: (data: IResult[]) => data,
@@ -32,7 +32,11 @@ const Profile: NextPageAuth = () => {
     select: (data: ILesson[]) => data,
   });
   const { data: tests } = useQuery('tests', TestingService.findAll, {
-    select: (data: ITesting[]) => data.filter((test) => testID.includes(test.id)),
+    select: (data: ITesting[]) => data,
+  });
+
+  const { data: questions } = useQuery('questions', QuestionService.findAll, {
+    select: (data: IQuestion[]) => data,
   });
 
   const {
@@ -60,17 +64,6 @@ const Profile: NextPageAuth = () => {
     formData.append('profile_photo', File);
     updateProfile(formData as any);
   };
-
-  useEffect(() => {
-    if (sections) {
-      setTestID(
-        sections
-          // @ts-ignore
-          ?.filter((section) => results?.map((result) => result?.section).includes(section?.id))
-          .map((section) => section?.test),
-      );
-    }
-  }, [sections, results]);
 
   return (
     <Layout>
@@ -160,6 +153,7 @@ const Profile: NextPageAuth = () => {
                         <Link
                           href={`/lesson/${
                             sections?.find((section) => section?.id === result?.section)?.material
+                              ?.id
                           }`}
                         >
                           Изменить материал
@@ -172,9 +166,9 @@ const Profile: NextPageAuth = () => {
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
               <Stack spacing={2}>
-                {tests?.map((test) => (
+                {sections?.map((section) => (
                   <Box
-                    key={test?.id}
+                    key={section?.id}
                     sx={{
                       backgroundColor: '#eee',
                       width: '100%',
@@ -183,11 +177,15 @@ const Profile: NextPageAuth = () => {
                     }}
                   >
                     <Stack direction="row" justifyContent="space-between">
-                      <Typography>
-                        {sections?.find((section) => section?.test === test.id)?.name} - Тест
-                      </Typography>
+                      <Typography>{section?.name} - Тест</Typography>
                       <Stack direction="row" spacing={5}>
-                        <Typography>{test?.total_question}</Typography>
+                        <Typography>
+                          {
+                            // @ts-ignore
+                            questions?.filter((question) => question?.test === section?.test?.id)
+                              .length
+                          }
+                        </Typography>
                       </Stack>
                     </Stack>
                   </Box>

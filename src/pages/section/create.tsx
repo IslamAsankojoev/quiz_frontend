@@ -3,6 +3,7 @@ import { ISection, SectionService } from '@/api/section.service';
 import { ITesting, TestingService } from '@/api/testing.service';
 import ButtonC from '@/components/Button';
 import Layout from '@/components/Layout';
+import useTypedSession from '@/hooks/useTypedSession';
 import { NextPageAuth } from '@/types/auth.types';
 import { Box, Button, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -12,6 +13,7 @@ import { useMutation } from 'react-query';
 
 const AddSection: NextPageAuth = () => {
   const router = useRouter();
+  const { data: session } = useTypedSession();
   const [picture, setPicture] = React.useState('' as string);
 
   const { mutate, isLoading } = useMutation(
@@ -73,12 +75,12 @@ const AddSection: NextPageAuth = () => {
       {
         ...data,
         picture: picture ? picture : '',
-        material: material,
-        test: test,
+        material: material as any,
+        test: test as any,
       },
       {
         onSuccess: () => {
-          router.push('/');
+          router.push('/section');
         },
       },
     );

@@ -3,6 +3,7 @@ import { ISection, SectionService } from '@/api/section.service';
 import { ITesting, TestingService } from '@/api/testing.service';
 import Layout from '@/components/Layout';
 import useRole from '@/hooks/useRole';
+import useTypedSession from '@/hooks/useTypedSession';
 import { NextPageAuth } from '@/types/auth.types';
 import {
   Button,
@@ -31,6 +32,7 @@ function shuffleArray(array: any) {
 
 const TestPage: NextPageAuth = () => {
   const router = useRouter();
+  const { data: sessions } = useTypedSession();
   const { isTeacher } = useRole();
   const { data: test } = useQuery('test', () => TestingService.findOne(Number(router?.query?.id)), {
     enabled: !!router?.query?.id,
@@ -115,6 +117,7 @@ const TestPage: NextPageAuth = () => {
       ...data,
       // @ts-ignore
       test: test?.id,
+      user: sessions?.user?.id,
     });
   };
 

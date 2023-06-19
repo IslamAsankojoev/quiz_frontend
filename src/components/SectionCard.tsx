@@ -49,13 +49,13 @@ const SectionCard: FC<
       />
       <h2>{name}</h2>
       <p>{description}</p>
-      <p>{lessons?.find((lesson) => lesson.id === material)?.duration}</p>
+      <p>{lessons?.find((lesson: ILesson) => lesson.id === material?.id)?.duration}</p>
       <Stack spacing={1}>
         <Button
           variant="contained"
           size="small"
           onClick={() => {
-            router.push(`/lesson/${material}`);
+            router.push(`/lesson/${material?.id}`);
           }}
         >
           {isTeacher ? 'Изменить материал' : 'Посмотреть материал'}
@@ -64,7 +64,7 @@ const SectionCard: FC<
           variant="contained"
           size="small"
           onClick={() => {
-            router.push(`/test/${test}`);
+            router.push(`/test/${test?.id}`);
           }}
         >
           {isTeacher ? 'Изменить тест' : 'Пройти тест'}

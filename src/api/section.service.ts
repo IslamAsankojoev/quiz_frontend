@@ -1,4 +1,6 @@
 import axiosInstance from './axios.config';
+import { ILesson } from './lesson.service';
+import { ITesting } from './testing.service';
 
 export const SectionService = {
   findAll: async () => {
@@ -33,7 +35,8 @@ export type ISection = {
   name: string;
   description: string;
   picture?: string;
-  test?: number;
-  material?: number;
+  test?: ITesting;
+  material?: ILesson;
   status?: boolean;
+  user?: number;
 };
